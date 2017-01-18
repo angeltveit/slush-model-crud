@@ -11,8 +11,8 @@ $ npm install -g https://github.com/angeltveit/slush-model-crud.git
 This plugin abstracts away the monkey work when creating CRUD routes in coherence with Express and Mongoose in Node.js. It simply creates a model and some simple default CRUD routes. It also supports inserting middleware in the process.
 
 The default folder structure is:
-* ./routes/api/<route-folder>/index.js
-* ./models/<modelname>/index.js
+* ./routes/api/[route-folder]/index.js
+* ./models/[modelname]/index.js
 
 These can be changed in ./config.json
 
