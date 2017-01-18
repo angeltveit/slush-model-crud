@@ -1,0 +1,17 @@
+{
+  "name": "slush-model-crud",
+  "version": "1.0.0",
+  "description": "slushgenerator",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "gulp-conflict": "^0.4.0",
+    "gulp-install": "^0.6.0",
+    "gulp-template": "^4.0.0",
+    "inquirer": "^2.0.0"
+  }
+}
