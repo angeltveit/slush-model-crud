@@ -1,0 +1,4 @@
+{
+  "modelsDir": "./models/",
+  "apiDir": "./routes/api/"
+}
