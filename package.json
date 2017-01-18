@@ -1,18 +1,41 @@
 {
   "name": "slush-model-crud",
-  "version": "1.0.0",
-  "description": "slushgenerator",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "description": "",
+  "version": "0.1.0",
+  "homepage": "https://github.com/angeltveit/slush-model-crud",
+  "author": {
+    "name": "angeltveit",
+    "email": "torbjorn@skjermpost.no"
   },
-  "author": "",
-  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/angeltveit/slush-model-crud.git"
+  },
+  "bugs": {
+    "url": "https://github.com/angeltveit/slush-model-crud/issues"
+  },
+  "license": "MIT",
+  "main": "slushfile.js",
+  "engines": {
+    "node": ">= 0.10.26",
+    "npm": ">=1.4.3"
+  },
+  "scripts": {
+    "test": "echo \"No tests\""
+  },
   "dependencies": {
-    "gulp": "^3.9.1",
-    "gulp-conflict": "^0.4.0",
-    "gulp-install": "^0.6.0",
-    "gulp-template": "^4.0.0",
-    "inquirer": "^2.0.0"
-  }
+    "gulp": "^3.6.2",
+    "gulp-conflict": "^0.1.1",
+    "gulp-install": "^0.1.4",
+    "gulp-rename": "^1.2.0",
+    "gulp-template": "^0.1.1",
+    "iniparser": "^1.0.5",
+    "inquirer": "^0.8.0",
+    "run-sequence": "^1.2.2",
+    "slush": ">=1.0.0",
+    "underscore.string": "^2.3.3"
+  },
+  "keywords": [
+    "slushgenerator"
+  ]
 }

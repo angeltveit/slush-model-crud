@@ -10,5 +10,5 @@ var <%= modelName %> = new Schema({
 })
 
 
-Auction.plugin(deepPopulate, {})
+<%= modelName %>.plugin(deepPopulate, {})
 module.exports = mongoose.model('<%= modelName %>', <%= modelName %>)
