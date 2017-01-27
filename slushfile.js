@@ -5,7 +5,6 @@ var template = require('gulp-template')
 var rename = require('gulp-rename')
 var inquirer = require('inquirer')
 var sequence = require('run-sequence')
-var config = require('./config.json')
 var replace = require('gulp-replace')
 var fs = require('fs')
 var path = require('path')
@@ -13,6 +12,12 @@ var _ = require('lodash')
 
 var answers = null
 var ROUTES = /([ \t]+)\/\* -ROUTES \*\//
+
+if(fs.existsSync(process.cwd() + '/model-crud.json')) {
+  var config = require(process.cwd() + '/model-crud.json')
+} else {
+  var config = require('./config.json')
+}
 
 
 var prompts = [{
@@ -22,19 +27,19 @@ var prompts = [{
     },{
       type: 'input',
       name: 'middlewareCreate',
-      message: 'Middleware for creating(restrict access etc)'
+      message: 'Middleware for creating(comma separated)'
     },{
       type: 'input',
       name: 'middlewareRead',
-      message: 'Middleware for reading(restrict access etc)'
+      message: 'Middleware for reading(comma separated)'
     },{
       type: 'input',
       name: 'middlewareUpdate',
-      message: 'Middleware for updating(restrict access etc)'
+      message: 'Middleware for updating(comma separated)'
     },{
       type: 'input',
       name: 'middlewareDelete',
-      message: 'Middleware for deleting(restrict access etc)'
+      message: 'Middleware for deleting(comma separated)'
     }]
 
 gulp.task('default', function (done) {
