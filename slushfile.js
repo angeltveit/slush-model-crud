@@ -74,7 +74,7 @@ gulp.task('patch:route', function(done) {
 })
 
 gulp.task('patch:model', function(done) {
-  var insert = `$1models.${modelName.model} = require('./${modelName.kebab}'))\n$1/* -MODELS */`
+  var insert = `$1models.${modelName.model} = require('./${modelName.kebab}')\n$1/* -MODELS */`
   console.log(config.modelsIndex)
   return gulp.src(config.modelsIndex)
     .pipe(replace(MODELS, insert))
