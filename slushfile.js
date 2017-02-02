@@ -8,10 +8,13 @@ var sequence = require('run-sequence')
 var replace = require('gulp-replace')
 var fs = require('fs')
 var path = require('path')
+var fs = require('fs')
 var _ = require('lodash')
 
-var answers = null
-var ROUTES = /([ \t]+)\/\* -ROUTES \*\//
+var modelName = {}
+var args = []
+var ROUTES = /([ \t]*)\/\* -ROUTES \*\//
+var MODELS = /([ \t]*)\/\* -MODELS \*\//
 
 if(fs.existsSync(process.cwd() + '/model-crud.json')) {
   var config = require(process.cwd() + '/model-crud.json')
@@ -19,64 +22,61 @@ if(fs.existsSync(process.cwd() + '/model-crud.json')) {
   var config = require('./config.json')
 }
 
-
-var prompts = [{
-      type: 'input',
-      name: 'modelName',
-      message: 'Name of your new model'
-    },{
-      type: 'input',
-      name: 'middlewareCreate',
-      message: 'Middleware for creating(comma separated)'
-    },{
-      type: 'input',
-      name: 'middlewareRead',
-      message: 'Middleware for reading(comma separated)'
-    },{
-      type: 'input',
-      name: 'middlewareUpdate',
-      message: 'Middleware for updating(comma separated)'
-    },{
-      type: 'input',
-      name: 'middlewareDelete',
-      message: 'Middleware for deleting(comma separated)'
-    }]
+String.prototype.capitalize = function() {
+  return this.charAt(0).toUpperCase() + this.slice(1)
+}
 
 gulp.task('default', function (done) {
-  inquirer.prompt(prompts,
-  function (results) {
-    answers = results
-    answers.modelName =
-      answers.modelName.charAt(0).toUpperCase() + answers.modelName.slice(1)
-    sequence('models','crud', 'patch')
-  });
+  args = gulp.args
+  console.log(args)
+  if(!args.length) {
+    console.log('Error: Please give a model name as first argument.')
+    return
+  }
+  if(!args[1] || args[1].toLowerCase() !== 'es5') {
+    args[1] = 'es6'
+  }
+  modelName = {
+    input: gulp.args[0],
+    camel: _.camelCase(args[0]),
+    model: _.camelCase(args[0]).capitalize(),
+    kebab: _.kebabCase(args[0])
+  }
+  sequence('models','crud', 'patch:route', 'patch:model')
 });
 
 gulp.task('models', function(done) {
   gulp.src(__dirname + '/templates/models/**.js')
-    .pipe(template(answers))
+    .pipe(template(modelName))
     .pipe(rename('index.js'))
     .pipe(conflict('./'))
-    .pipe(gulp.dest(`${config.modelsDir}/${answers.modelName.toLowerCase()}/`))
+    .pipe(gulp.dest(`${config.modelsDir}/${modelName.kebab}/`))
     .on('finish', function () {
       done();
     });
 })
 
 gulp.task('crud', function(done) {
-  gulp.src(__dirname + '/templates/crud/**.js')
-    .pipe(template(answers))
+  gulp.src(__dirname + `/templates/crud/${args[1]}/**.js`)
+    .pipe(template(modelName))
     .pipe(conflict('./'))
-    .pipe(gulp.dest(`${config.apiDir}${answers.modelName.toLowerCase()}/`))
+    .pipe(gulp.dest(`${config.apiDir}${modelName.kebab}/`))
     .on('finish', function () {
       done();
     });
 })
 
-gulp.task('patch', function(done) {
-  var kebab = _.kebabCase(answers.modelName)
-  var route = `$1app.use('/${kebab}', require('./${kebab}'))\n$1/* -ROUTES */`
+gulp.task('patch:route', function(done) {
+  var route = `$1app.use('/${modelName.camel}', require('./${modelName.kebab}'))\n$1/* -ROUTES */`
   return gulp.src(config.routesIndex)
     .pipe(replace(ROUTES, route))
     .pipe(gulp.dest(path.dirname(config.routesIndex)))
+})
+
+gulp.task('patch:model', function(done) {
+  var insert = `$1models.${modelName.model} = require('./${modelName.kebab}'))\n$1/* -MODELS */`
+  console.log(config.modelsIndex)
+  return gulp.src(config.modelsIndex)
+    .pipe(replace(MODELS, insert))
+    .pipe(gulp.dest(path.dirname(config.modelsIndex)))
 })

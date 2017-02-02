@@ -1,5 +1,6 @@
 {
   "modelsDir": "./models/",
   "apiDir": "./routes/api/",
-  "routesIndex": "./routes/index.js"
+  "routesIndex": "./routes/index.js",
+  "modelsIndex": "./models/index.js"
 }

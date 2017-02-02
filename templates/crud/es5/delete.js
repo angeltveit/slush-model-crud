@@ -1,9 +1,8 @@
 module.exports = function(req, res, next) {
-  var <%= modelName %> = req.model('<%= modelName %>')
+  var <%= model %> = req.model('<%= model %>')
   delete req.body._id
-
-  var <%= modelName.toLowerCase() %> = new <%= modelName %>(req.body)
-  <%= modelName.toLowerCase() %>.findOne({
+  
+  <%= model %>.findOne({
       _id: req.params.id
     }).then(function(data) {
       data.remove()
